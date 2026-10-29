@@ -1,11 +1,23 @@
-name: Build NRO
+name: Build NoomiSwitch NRO
 
 on:
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Test
-run: echo "Workflow syntax is valid"
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build NRO
+        run: make
+
+      - name: Upload NRO
+        uses: actions/upload-artifact@v4
+        with:
+          name: NoomiSwitch-NRO
+          path: NoomiSwitch.nro
+          if-no-files-found: error
